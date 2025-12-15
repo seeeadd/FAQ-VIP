@@ -1509,3 +1509,12 @@
   }
 })();
 </script>
+<script>
+  function sendHeight() {
+    const h = document.documentElement.scrollHeight;
+    parent.postMessage({ type: "setHeight", height: h }, "*");
+  }
+
+  window.addEventListener("load", sendHeight);
+  new ResizeObserver(sendHeight).observe(document.documentElement);
+</script>
