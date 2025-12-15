@@ -1517,3 +1517,32 @@
   }
 })();
 </script>
+
+<script>
+  function getHeight() {
+    const b = document.body;
+    const e = document.documentElement;
+    return Math.max(
+      b.scrollHeight, b.offsetHeight,
+      e.clientHeight, e.scrollHeight, e.offsetHeight
+    );
+  }
+
+  function sendHeight() {
+    parent.postMessage({ type: "setHeight", height: getHeight() }, "*");
+  }
+
+  window.addEventListener("load", sendHeight);
+  window.addEventListener("resize", sendHeight);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(sendHeight);
+  }
+
+  setTimeout(sendHeight, 200);
+  setTimeout(sendHeight, 800);
+  setTimeout(sendHeight, 1500);
+
+  new ResizeObserver(sendHeight).observe(document.body);
+</script>
+
